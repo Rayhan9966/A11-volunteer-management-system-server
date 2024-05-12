@@ -43,7 +43,7 @@ run().catch(console.dir);
 
 
 app.get('/',(req,res) => {
-res.send('volunteer management is running')
+res.send('volunteer management system is running')
 })
 app.listen(port,()=>{
 console.log(`volunteer management server is running on port ${port}`);
