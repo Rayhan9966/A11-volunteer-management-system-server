@@ -47,11 +47,23 @@ res.send(result);
 
 })
 
-
-//delete item
-app.delete('/post/:id',(req,res)=>{
+//update
+app.put('/post/:id', async (req, res) => {
   const id=req.params.id;
   const query=  {_id: new ObjectId(id)}
+
+
+  const result= await addvolunteerCollection.findOne(query);
+  res.send(result);
+  
+  })
+
+//delete item
+app.delete('/post/:id', async (req,res)=>{
+  const id=req.params.id;
+  const query=  {_id: new ObjectId(id)}
+  const result= await addvolunteerCollection.deleteOne(query);
+  res.send(result);
 })
 
 app.get('/post', async(req,res)=>{
