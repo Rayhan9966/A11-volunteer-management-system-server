@@ -42,9 +42,22 @@ async function run() {
 //get all data from mongodb
 app.get('/posts', async (req, res) => {
 
-const result= await postsCollection.find().toArray()
-res.send(result)
+const result= await postsCollection.find().toArray();
+res.send(result);
 
+})
+
+
+
+app.get('/post', async(req,res)=>{
+  const result= await addvolunteerCollection.find().toArray();
+  res.send(result);
+})
+app.post('/post',async(req,res)=>{
+  const newPost=req.body;
+  console.log(newPost);
+  const result=await addvolunteerCollection.insertOne(newPost);
+  res.send(result);
 })
 
 
