@@ -66,6 +66,14 @@ app.delete('/post/:id', async (req,res)=>{
   res.send(result);
 })
 
+//tdata dlt
+app.delete('/post/:id', async (req,res)=>{
+  const id=req.params.id;
+  const query=  {_id: new ObjectId(id)}
+  const result= await addvolunteerCollection.deleteOne(query);
+  res.send(result);
+})
+
 app.get('/post', async(req,res)=>{
   const result= await addvolunteerCollection.find().toArray();
   res.send(result);
