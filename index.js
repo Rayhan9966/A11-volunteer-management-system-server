@@ -70,6 +70,14 @@ app.get('/post', async(req,res)=>{
   const result= await addvolunteerCollection.find().toArray();
   res.send(result);
 })
+
+//my list
+app.get('/post',async(req,res) => {
+  const result= await addvolunteerCollection.find().toArray();
+  res.send(result);
+})
+
+
 app.post('/post',async(req,res)=>{
   const newPost=req.body;
   console.log(newPost);
