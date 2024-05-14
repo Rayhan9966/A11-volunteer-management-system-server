@@ -10,13 +10,21 @@ const port =process.env.PORT|| 9000;
 console.log(process.env.DB_PASS);
 //midleware
 
-const corsOption={
-  origin:['http://localhost:5173', 'http://localhost:5174'],
-  Credential:true,
-  optionSuccessStatus:200
-}
+// const corsOption={
+//   origin:['http://localhost:5173', 'http://localhost:5174'],
+//   Credential:true,
+//   optionSuccessStatus:200
+// }
 
-app.use(cors(corsOption));
+// app.use(cors(corsOption));
+const corsOpts = {
+  origin: ["https://volunteer-management-server-neon.vercel.app", "http://localhost:5173","https://volunteer-management-762bc.web.app"],
+
+  // methods:["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+ 
+};
+
+app.use(cors(corsOpts));
 app.use(express.json());
 
 //mongodb
