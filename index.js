@@ -3,8 +3,8 @@ const cors = require('cors');
 require('dotenv').config()
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
-const app =express();
-const port =process.env.PORT|| 9000;
+const app = express();
+const port = process.env.PORT || 9000;
 
 
 console.log(process.env.DB_PASS);
@@ -18,10 +18,10 @@ console.log(process.env.DB_PASS);
 
 // app.use(cors(corsOption));
 const corsOpts = {
-  origin: ["https://volunteer-management-server-neon.vercel.app", "http://localhost:5173","https://volunteer-management-762bc.web.app"],
+  origin: ["https://volunteer-management-server-neon.vercel.app", "http://localhost:5173", "https://volunteer-management-762bc.web.app"],
 
   // methods:["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
- 
+
 };
 
 app.use(cors(corsOpts));
@@ -44,62 +44,88 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    const postsCollection=client.db('volunteer').collection('posts')
-    const addvolunteerCollection=client.db('volunteer').collection('add-volunteer')
+    const postsCollection = client.db('volunteer').collection('posts')
+    const addvolunteerCollection = client.db('volunteer').collection('add-volunteer')
 
-//get all data from mongodb
-app.get('/posts', async (req, res) => {
+    //get all data from mongodb
+    app.get('/posts', async (req, res) => {
 
-const result= await postsCollection.find().toArray();
-res.send(result);
+      const result = await postsCollection.find().toArray();
+      res.send(result);
 
-})
+    })
 
-//update
-app.put('/post/:id', async (req, res) => {
-  const id=req.params.id;
-  const query=  {_id: new ObjectId(id)}
-
-
-  const result= await addvolunteerCollection.findOne(query);
-  res.send(result);
-  
-  })
-
-//delete item
-app.delete('/post/:id', async (req,res)=>{
-  const id=req.params.id;
-  const query=  {_id: new ObjectId(id)}
-  const result= await addvolunteerCollection.deleteOne(query);
-  res.send(result);
-})
-
-//tdata dlt
-app.delete('/post/:id', async (req,res)=>{
-  const id=req.params.id;
-  const query=  {_id: new ObjectId(id)}
-  const result= await addvolunteerCollection.deleteOne(query);
-  res.send(result);
-})
-
-app.get('/post', async(req,res)=>{
-  const result= await addvolunteerCollection.find().toArray();
-  res.send(result);
-})
-
-//my list
-app.get('/post',async(req,res) => {
-  const result= await addvolunteerCollection.find().toArray();
-  res.send(result);
-})
+    //update
+    app.put('/post/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
 
 
-app.post('/post',async(req,res)=>{
-  const newPost=req.body;
-  console.log(newPost);
-  const result=await addvolunteerCollection.insertOne(newPost);
-  res.send(result);
-})
+      const result = await addvolunteerCollection.findOne(query);
+      res.send(result);
+
+    })
+
+    //delete item
+    app.delete('/post/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const result = await addvolunteerCollection.deleteOne(query);
+      res.send(result);
+    })
+    //update
+    app.patch('/post/:id', async (req, res) => {
+      const post = req.body;
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) }
+      const updatedDoc = {
+        $set: {
+          name: post.name,
+          // thumbnail  :
+           
+
+// description 
+// category 
+// location
+// volunteer_need
+
+// deadline 
+// email
+
+
+
+
+        }
+      }
+      const result = await postsCollection.updateOne(filter, updatedDoc)
+      res.send(result);
+    })
+    //tdata dlt
+    // app.delete('/post/:id', async (req,res)=>{
+    //   const id=req.params.id;
+    //   const query=  {_id: new ObjectId(id)}
+    //   const result= await addvolunteerCollection.deleteOne(query);
+    //   res.send(result);
+    // })
+
+    app.get('/post', async (req, res) => {
+      const result = await addvolunteerCollection.find().toArray();
+      res.send(result);
+    })
+
+    //my list
+    app.get('/post', async (req, res) => {
+      const result = await addvolunteerCollection.find().toArray();
+      res.send(result);
+    })
+
+
+    app.post('/post', async (req, res) => {
+      const newPost = req.body;
+      console.log(newPost);
+      const result = await addvolunteerCollection.insertOne(newPost);
+      res.send(result);
+    })
 
 
 
@@ -116,11 +142,11 @@ app.post('/post',async(req,res)=>{
 run().catch(console.dir);
 
 
-app.get('/',(req,res) => {
-res.send('volunteer management system is running')
+app.get('/', (req, res) => {
+  res.send('volunteer management system is running')
 })
-app.listen(port,()=>{
-console.log(`volunteer management server is running on port ${port}`);
+app.listen(port, () => {
+  console.log(`volunteer management server is running on port ${port}`);
 
 
 })
