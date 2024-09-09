@@ -55,6 +55,8 @@ async function run() {
 
     })
 
+
+
     //update
     app.put('/post/:id', async (req, res) => {
       const id = req.params.id;
@@ -66,6 +68,19 @@ async function run() {
 
     })
 
+    app.get('/post-details/:id', async (req, res) => {
+      const id = req.params.id;
+      console.log(id, 'this is my id');
+      const query = { _id: new ObjectId(id) }
+      const result = await addvolunteerCollection.findOne(query);
+      console.log(result, 'this is result');
+      res.send(result);
+
+
+
+
+    })
+
     //delete item
     app.delete('/post/:id', async (req, res) => {
       const id = req.params.id;
@@ -73,33 +88,61 @@ async function run() {
       const result = await addvolunteerCollection.deleteOne(query);
       res.send(result);
     })
-    //update
-    app.patch('/post/:id', async (req, res) => {
-      const post = req.body;
+
+    // update post
+
+
+
+    //update addvolunteer
+    app.put('/post-details/:id', async (req, res) => {
+      // const post = req.body;
       const id = req.params.id;
       const filter = { _id: new ObjectId(id) }
-      const updatedDoc = {
+      const option = { upsert: true };
+      const updatedPost = req.body;
+      const simplePost = {
         $set: {
-          name: post.name,
-          // thumbnail  :
-           
+          name: updatedPost.name,
+          thumbnail: updatedPost.thumbnail,
+          title: updatedPost.title,
+          description: updatedPost.description,
+          category: updatedPost.category,
+          location: updatedPost.location,
 
-// description 
-// category 
-// location
-// volunteer_need
-
-// deadline 
-// email
-
-
-
+          volunteer_need: updatedPost.volunteer_need,
+          deadline: updatedPost.deadline,
+          email: updatedPost.email
 
         }
       }
-      const result = await postsCollection.updateOne(filter, updatedDoc)
+      const result = await addvolunteerCollection.updateOne(filter, simplePost, option)
       res.send(result);
     })
+
+    // //update addvolunteer
+    // app.put('/updatepost/:id', async (req, res) => {
+    //   // const post = req.body;
+    //   const id = req.params.id;
+    //   const filter = { _id: new ObjectId(id) }
+    //   const option={upsert:true};
+    //   const updatedPost=req.body;
+    //   const simplePost = {
+    //     $set: {
+    //       name :updatedPost.name,
+    //       thumbnail:updatedPost.thumbnail,
+    //       title:updatedPost.title,
+    //       description:updatedPost.description,
+    //        category:updatedPost.category,
+    //        location:updatedPost.location, 
+    //        volunteerneed:updatedPost.volunteerneed,
+    //        deadline:updatedPost.deadline,
+    //        email:updatedPost.email
+
+    //     }
+    //   }
+    //   const result = await postsCollection.updateOne(filter, simplePost,option)
+    //   res.send(result);
+    // })
     //tdata dlt
     // app.delete('/post/:id', async (req,res)=>{
     //   const id=req.params.id;
